@@ -1,8 +1,8 @@
 <h1>Mis Reservas</h1>
 
 <ul>
-    <li>
-        Taller El Rápido - 20/11/2025 10:00 AM 
+    <li>Taller Amarilis 25-12-2025 10:00 a.m.
+        
         <button>Cancelar</button>
         <button>Reprogramar</button>
     </li>

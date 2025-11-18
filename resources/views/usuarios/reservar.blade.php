@@ -11,7 +11,7 @@
     <select>
         <option>Mantenimiento</option>
         <option>Reparación</option>
-        <option>Diagnóstico</option>
+    
     </select>
 
     <label>Fecha:</label>

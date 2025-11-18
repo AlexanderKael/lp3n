@@ -2,6 +2,6 @@
 
 <ul>
     <li>
-        Taller MotorMax - 01/10/2025 - Mantenimiento
+        Taller Amarilis 25-12-2025 10:00 a.m.
     </li>
 </ul>

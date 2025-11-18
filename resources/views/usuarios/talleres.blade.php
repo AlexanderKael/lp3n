@@ -3,5 +3,5 @@
 <input type="text" placeholder="Buscar taller por distrito">
 
 <ul>
-    <li>Taller Mecánico El Rápido - <button>Ver</button></li>
+    <li>TALLER AMARILIS<button>Ver</button></li>
 </ul>
