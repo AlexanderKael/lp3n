@@ -23,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        if (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.agendas');
+        }
+        return redirect()->route('usuario.reservas');
     }
 }
