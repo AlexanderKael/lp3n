@@ -32,6 +32,9 @@
                         @auth
                             @if(auth()->user()->isAdmin())
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.agendas') }}">Agendas</a>
                                 </li>
                                 <li class="nav-item">
@@ -41,14 +44,24 @@
                                     <a class="nav-link" href="{{ route('admin.tecnicos') }}">Técnicos</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('admin.usuarios') }}">Usuarios</a>
+                                </li>
+                                <li class="nav-item">
                                     <a class="nav-link" href="{{ route('admin.notificaciones') }}">Notificaciones</a>
+                                </li>
+                            @elseif(auth()->user()->isTecnico())
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('tecnico.index') }}">Dashboard</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('tecnico.reservas-disponibles') }}">Reservas Disponibles</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ route('tecnico.mis-reservas') }}">Mis Reservas</a>
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('usuario.reservas') }}">Reservas</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('usuario.talleres') }}">Talleres</a>
+                                    <a class="nav-link" href="{{ route('usuario.buscar-talleres') }}">Buscar Talleres</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('usuario.historial') }}">Historial</a>
@@ -99,3 +112,4 @@
     </div>
 </body>
 </html>
+

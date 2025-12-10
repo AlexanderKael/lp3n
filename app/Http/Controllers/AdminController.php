@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Taller;
-use App\Models\Tecnico;
 use App\Models\Cita;
 use App\Models\Notificacion;
 use App\Models\User;
@@ -16,7 +15,8 @@ class AdminController extends Controller
     {
         $this->middleware('auth');
         $this->middleware(function ($request, $next) {
-            if (!Auth::user()->isAdmin()) {
+            $user = Auth::user();
+            if (!$user || $user->role !== 'admin') {
                 abort(403);
             }
             return $next($request);
@@ -25,7 +25,7 @@ class AdminController extends Controller
 
     public function agendas()
     {
-        $citas = Cita::with(['taller', 'tecnico', 'user'])->get();
+        $citas = Cita::with(['taller', 'tecnico', 'user', 'tecnicoUser'])->orderBy('fecha', 'desc')->orderBy('hora', 'desc')->get();
         return view('admin.agendas', compact('citas'));
     }
 
@@ -45,6 +45,7 @@ class AdminController extends Controller
             'hora_apertura' => 'nullable|date_format:H:i',
             'hora_cierre' => 'nullable|date_format:H:i',
             'dias_atencion' => 'nullable|string',
+            'ciudad' => 'nullable|string|max:255',
         ]);
 
         Taller::create($request->all());
@@ -54,25 +55,8 @@ class AdminController extends Controller
 
     public function tecnicos()
     {
-        $talleres = Taller::all();
-        $tecnicos = Tecnico::with('taller')->get();
-        return view('admin.tecnicos', compact('talleres', 'tecnicos'));
-    }
-
-    public function crearTecnico(Request $request)
-    {
-        $request->validate([
-            'nombre' => 'required|string|max:255',
-            'especialidad' => 'required|string|max:255',
-            'taller_id' => 'required|exists:talleres,id',
-            'horario_disponible_inicio' => 'nullable|date_format:H:i',
-            'horario_disponible_fin' => 'nullable|date_format:H:i',
-            'dias_disponibles' => 'nullable|string',
-        ]);
-
-        Tecnico::create($request->all());
-
-        return redirect()->route('admin.tecnicos')->with('success', 'Técnico creado exitosamente');
+        $tecnicos = User::where('role', 'tecnico')->with('taller')->orderBy('created_at', 'desc')->get();
+        return view('admin.tecnicos', compact('tecnicos'));
     }
 
     public function notificaciones()
@@ -98,5 +82,25 @@ class AdminController extends Controller
         ]);
 
         return redirect()->route('admin.notificaciones')->with('success', 'Notificación enviada exitosamente');
+    }
+
+    public function usuarios()
+    {
+        $usuarios = User::with('taller')->orderBy('created_at', 'desc')->get();
+        return view('admin.usuarios', compact('usuarios'));
+    }
+
+    public function dashboard()
+    {
+        $totalTecnicos = User::where('role', 'tecnico')->count();
+        $totalUsuarios = User::where('role', 'usuario')->count();
+        $totalTalleres = Taller::count();
+        $totalCitas = Cita::count();
+        
+        $tecnicos = User::where('role', 'tecnico')->with('taller')->limit(5)->get();
+        $usuarios = User::where('role', 'usuario')->limit(5)->get();
+        $talleres = Taller::limit(5)->get();
+
+        return view('admin.dashboard', compact('totalTecnicos', 'totalUsuarios', 'totalTalleres', 'totalCitas', 'tecnicos', 'usuarios', 'talleres'));
     }
 }

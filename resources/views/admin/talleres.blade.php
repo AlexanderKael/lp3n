@@ -65,6 +65,14 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Ciudad</label>
+                                    <input type="text" class="form-control" name="ciudad" placeholder="Ej: Lima">
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" class="btn" style="background-color: #e74c3c; color: white;">Registrar Taller</button>
                     </form>
                 </div>
@@ -80,6 +88,7 @@
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Dirección</th>
+                                    <th>Ciudad</th>
                                     <th>Teléfono</th>
                                     <th>Email</th>
                                     <th>Horario de Atención</th>
@@ -91,6 +100,7 @@
                                     <tr>
                                         <td>{{ $taller->nombre }}</td>
                                         <td>{{ $taller->direccion }}</td>
+                                        <td>{{ $taller->ciudad ?? 'N/A' }}</td>
                                         <td>{{ $taller->telefono }}</td>
                                         <td>{{ $taller->email }}</td>
                                         <td>

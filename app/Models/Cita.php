@@ -13,9 +13,13 @@ class Cita extends Model
         'hora',
         'servicio',
         'estado',
+        'estado_progreso',
         'taller_id',
         'tecnico_id',
+        'tecnico_user_id',
         'user_id',
+        'placa_vehiculo',
+        'descripcion',
     ];
 
     protected $casts = [
@@ -35,5 +39,37 @@ class Cita extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function tecnicoUser()
+    {
+        return $this->belongsTo(User::class, 'tecnico_user_id');
+    }
+
+    public function scopeDisponibles($query)
+    {
+        return $query->whereNull('tecnico_user_id')->where('estado', 'pendiente');
+    }
+
+    public function getTecnicoAsignadoAttribute()
+    {
+        if ($this->tecnico_user_id) {
+            return $this->tecnicoUser;
+        }
+        if ($this->tecnico_id) {
+            return $this->tecnico;
+        }
+        return null;
+    }
+
+    public function estaDisponible($fecha, $hora)
+    {
+        $existe = self::where('taller_id', $this->taller_id)
+            ->where('fecha', $fecha)
+            ->where('hora', $hora)
+            ->where('id', '!=', $this->id)
+            ->exists();
+        
+        return !$existe;
     }
 }

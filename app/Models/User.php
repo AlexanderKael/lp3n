@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'taller_id',
     ];
 
     /**
@@ -60,5 +61,25 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role === 'admin';
+    }
+
+    public function isTecnico()
+    {
+        return $this->role === 'tecnico';
+    }
+
+    public function isUsuario()
+    {
+        return $this->role === 'usuario';
+    }
+
+    public function taller()
+    {
+        return $this->belongsTo(Taller::class);
+    }
+
+    public function citasAsignadas()
+    {
+        return $this->hasMany(Cita::class, 'tecnico_user_id');
     }
 }

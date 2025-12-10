@@ -52,7 +52,7 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['nullable', 'string', 'in:usuario,admin'],
+            'role' => ['nullable', 'string', 'in:usuario,admin,tecnico'],
         ]);
     }
 
@@ -64,11 +64,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'role' => $data['role'] ?? 'usuario',
         ]);
+
+        if ($user->role === 'tecnico') {
+            $this->redirectTo = '/tecnico/elegir-taller';
+        }
+
+        return $user;
+    }
+
+    protected function registered($request, $user)
+    {
+        if ($user->role === 'tecnico') {
+            return redirect()->route('tecnico.elegir-taller');
+        }
+        return redirect($this->redirectPath());
     }
 }

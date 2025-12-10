@@ -67,6 +67,7 @@
                             <div class="col-md-6">
                                 <select id="role" class="form-control @error('role') is-invalid @enderror" name="role">
                                     <option value="usuario">Usuario</option>
+                                    <option value="tecnico">Técnico</option>
                                     <option value="admin">Administrador</option>
                                 </select>
 

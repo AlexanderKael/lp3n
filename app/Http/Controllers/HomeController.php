@@ -23,9 +23,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->isAdmin()) {
+        $user = auth()->user();
+        
+        if ($user->isAdmin()) {
             return redirect()->route('admin.agendas');
         }
+        
+        if ($user->isTecnico()) {
+            return redirect()->route('tecnico.index');
+        }
+        
         return redirect()->route('usuario.reservas');
     }
 }

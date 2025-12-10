@@ -9,6 +9,12 @@
                     <h4 class="mb-0">Gestión de Agendas</h4>
                 </div>
                 <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    @endif
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
@@ -30,17 +36,25 @@
                                         <td>{{ $cita->user->name }}</td>
                                         <td>{{ $cita->servicio }}</td>
                                         <td>
-                                            @if($cita->estado == 'pendiente')
+                                            @if($cita->estado_progreso == 'pendiente')
                                                 <span class="badge bg-warning">Pendiente</span>
-                                            @elseif($cita->estado == 'confirmada')
-                                                <span class="badge bg-success">Confirmada</span>
-                                            @elseif($cita->estado == 'cancelada')
-                                                <span class="badge bg-danger">Cancelada</span>
+                                            @elseif($cita->estado_progreso == 'en_proceso')
+                                                <span class="badge bg-info">En Proceso</span>
+                                            @elseif($cita->estado_progreso == 'completado')
+                                                <span class="badge bg-success">Completado</span>
                                             @else
-                                                <span class="badge bg-info">{{ $cita->estado }}</span>
+                                                <span class="badge bg-secondary">{{ $cita->estado_progreso ?? 'Pendiente' }}</span>
                                             @endif
                                         </td>
-                                        <td>{{ $cita->tecnico->nombre ?? 'Sin asignar' }}</td>
+                                        <td>
+                                            @if($cita->tecnicoUser)
+                                                {{ $cita->tecnicoUser->name }}
+                                            @elseif($cita->tecnico)
+                                                {{ $cita->tecnico->nombre }}
+                                            @else
+                                                Sin asignar
+                                            @endif
+                                        </td>
                                         <td>
                                             <span class="badge bg-secondary">{{ $cita->taller->nombre }}</span>
                                         </td>
