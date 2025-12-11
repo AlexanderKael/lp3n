@@ -93,8 +93,13 @@
     </div>
 </div>
 
+<div id="taller-data" data-taller-id="{{ $taller ? $taller->id : '' }}" style="display: none;"></div>
+
 <script>
-var tallerIdFijo = @if($taller){{ $taller->id }}@else null @endif;
+var tallerIdFijo = document.getElementById('taller-data')?.dataset.tallerId || null;
+if (tallerIdFijo) {
+    tallerIdFijo = parseInt(tallerIdFijo);
+}
 
 document.getElementById('fecha').addEventListener('change', function() {
     cargarHorarios();
